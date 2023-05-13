@@ -4243,6 +4243,44 @@ end</script>
 					</regexCodePropertyList>
 				</Trigger>
 			</TriggerGroup>
+			<TriggerGroup isActive="no" isFolder="yes" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+				<name>Astaria</name>
+				<script></script>
+				<triggerType>0</triggerType>
+				<conditonLineDelta>0</conditonLineDelta>
+				<mStayOpen>0</mStayOpen>
+				<mCommand></mCommand>
+				<packageName></packageName>
+				<mFgColor>#ff0000</mFgColor>
+				<mBgColor>#ffff00</mBgColor>
+				<mSoundFile></mSoundFile>
+				<colorTriggerFgColor>#000000</colorTriggerFgColor>
+				<colorTriggerBgColor>#000000</colorTriggerBgColor>
+				<regexCodeList />
+				<regexCodePropertyList />
+				<Trigger isActive="yes" isFolder="no" isTempTrigger="no" isMultiline="no" isPerlSlashGOption="no" isColorizerTrigger="no" isFilterTrigger="no" isSoundTrigger="no" isColorTrigger="no" isColorTriggerFg="no" isColorTriggerBg="no">
+					<name>Login</name>
+					<script>raiseEvent("mmp logged in", "Astaria")
+mmp.game = "astaria"
+mmp.echo("We're connected to Astaria.")</script>
+					<triggerType>0</triggerType>
+					<conditonLineDelta>0</conditonLineDelta>
+					<mStayOpen>0</mStayOpen>
+					<mCommand></mCommand>
+					<packageName></packageName>
+					<mFgColor>#ff0000</mFgColor>
+					<mBgColor>#ffff00</mBgColor>
+					<mSoundFile></mSoundFile>
+					<colorTriggerFgColor>#000000</colorTriggerFgColor>
+					<colorTriggerBgColor>#000000</colorTriggerBgColor>
+					<regexCodeList>
+						<string>Don't forget to check the message board in StarKeep's</string>
+					</regexCodeList>
+					<regexCodePropertyList>
+						<integer>0</integer>
+					</regexCodePropertyList>
+				</Trigger>
+			</TriggerGroup>
 		</TriggerGroup>
 	</TriggerPackage>
 	<TimerPackage>
@@ -4411,7 +4449,7 @@ mmp.settings:setOption(matches[3], val)</script>
 				<packageName></packageName>
 				<regex>^area list$</regex>
 			</Alias>
-			<AliasGroup isActive="no" isFolder="yes">
+			<AliasGroup isActive="yes" isFolder="yes">
 				<name>mm Mapping</name>
 				<script></script>
 				<command></command>
@@ -10632,7 +10670,7 @@ end</script>
 					</eventHandlerList>
 				</Script>
 			</ScriptGroup>
-			<ScriptGroup isActive="yes" isFolder="yes">
+			<ScriptGroup isActive="no" isFolder="yes">
 				<name>Game-specific</name>
 				<packageName></packageName>
 				<script>-------------------------------------------------
@@ -11028,7 +11066,7 @@ end</script>
 						</eventHandlerList>
 					</Script>
 				</Script>
-				<Script isActive="yes" isFolder="no">
+				<Script isActive="no" isFolder="no">
 					<name>Dragonswords</name>
 					<packageName></packageName>
 					<script></script>
@@ -11818,6 +11856,129 @@ end</script>
 end</script>
 						<eventHandlerList>
 							<string>gmcp.Room.WrongDir</string>
+						</eventHandlerList>
+					</Script>
+				</Script>
+				<Script isActive="yes" isFolder="no">
+					<name>Astaria</name>
+					<packageName></packageName>
+					<script></script>
+					<eventHandlerList />
+					<Script isActive="no" isFolder="no">
+						<name>mmp.asteriaStopSpeedwalkForWrongDir</name>
+						<packageName></packageName>
+						<script>function mmp.asteriaStopSpeedwalkForWrongDir()
+  if mmp.game and mmp.game ~= "asteria" then
+    return
+  end
+  if #mmp.speedWalkPath &gt; 0 then
+    echo("Can't go \"" .. gmcp.Room.WrongDir .. "\". Stopping speedwalk.")
+    mmp.stop()
+  end
+end</script>
+						<eventHandlerList>
+							<string>gmcp.Room.WrongDir</string>
+						</eventHandlerList>
+					</Script>
+					<Script isActive="yes" isFolder="no">
+						<name>mmp.registerAsteriasEnvData</name>
+						<packageName></packageName>
+						<script>function mmp.registerAstariasEnvData(_, game)
+  if game ~= "Astaria" then
+    return
+  end
+  mmp.envids =
+    {
+      Air = 20,
+      Airship = 21,
+      Badland = 22,
+      Beach = 23,
+      Carriage = 24,
+      Cave = 25,
+      City = 26,
+      Coast = 27,
+      Default = 28,
+      Desert = 29,
+      Field = 30,
+      Forest = 31,
+      Ghetto = 32,
+      Hills = 33,
+      Home = 34,
+      Inn = 35,
+      Inside = 36,
+      Marsh = 37,
+      Mountain = 38,
+      Road = 39,
+      Ship = 40,
+      Shop = 41,
+      Temple = 42,
+      Tundra = 43,
+      Underwater = 44,
+      Vehicle = 45,
+      Water = 46,
+    }
+  mmp.waterenvs = {}
+  mmp.envidsr = {}
+  for name, id in pairs(mmp.envids) do
+    mmp.envidsr[id] = name
+  end
+
+
+mmp.colorcodes = {}
+mmp.colorcodes[20] = {176, 224, 230, 255}
+mmp.colorcodes[21] = {160, 82, 45, 255}
+mmp.colorcodes[22] = {205, 133, 63, 255}
+mmp.colorcodes[23] = {218, 165, 32, 255}
+mmp.colorcodes[24] = {132, 112, 255, 255}
+mmp.colorcodes[25] = {47, 79, 79, 255}
+mmp.colorcodes[26] = {190, 190, 190, 255}
+mmp.colorcodes[27] = {210, 180, 140, 255}
+mmp.colorcodes[28] = {255, 69, 0, 255}
+mmp.colorcodes[29] = {255, 215, 0, 255}
+mmp.colorcodes[30] = {127, 255, 0, 255}
+mmp.colorcodes[31] = {0, 100, 0, 255}
+mmp.colorcodes[32] = {184, 134, 11, 255}
+mmp.colorcodes[33] = {50, 205, 50, 255}
+mmp.colorcodes[34] = {102, 205, 170, 255}
+mmp.colorcodes[35] = {0, 128, 128, 255}
+mmp.colorcodes[36] = {255, 250, 205, 255}
+mmp.colorcodes[37] = {107, 142, 35, 255}
+mmp.colorcodes[38] = {139, 69, 19, 255}
+mmp.colorcodes[39] = {112, 128, 144, 255}
+mmp.colorcodes[40] = {265, 42, 42, 255}
+mmp.colorcodes[41] = {0, 190, 255, 255}
+mmp.colorcodes[42] = {138, 43, 226, 255}
+mmp.colorcodes[43] = {255, 250, 250, 255}
+mmp.colorcodes[44] = {65, 105, 225, 255}
+mmp.colorcodes[45] = {90, 158, 160, 255}
+mmp.colorcodes[46] = {30, 144, 255, 255}
+
+function mmp.setAstariaColorcodes()
+  for id, rgba in pairs(mmp.colorcodes) do
+    setCustomEnvColor(id, rgba[1], rgba[2], rgba[3], rgba[4])
+  end
+ end
+end</script>
+						<eventHandlerList>
+							<string>mmp logged in</string>
+						</eventHandlerList>
+					</Script>
+					<Script isActive="no" isFolder="no">
+						<name>mmp.asteriaCanMove</name>
+						<packageName></packageName>
+						<script>-- Asteria's GMCP butts heads with existing GMCP 'able' checks in the speedwalking script. This works around it.
+
+function mmp.asteriaCanMove(_, game)
+  if game ~= "Asteria" then
+    return
+  end
+
+function mmp.mapperCanMove()
+    return gmcp.Char and gmcp.Char.Balance and gmcp.Char.Balance.balance == 0
+  end
+end</script>
+						<eventHandlerList>
+							<string>mmp logged in</string>
 						</eventHandlerList>
 					</Script>
 				</Script>
