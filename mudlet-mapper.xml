@@ -10454,7 +10454,7 @@ local function makeroom(oldid, newid, x, y, z)
   local fgr, fgg, fgb = unpack(color_table.red)
   local bgr, bgg, bgb = unpack(color_table.blue)
   highlightRoom(newid, fgr, fgg, fgb, bgr, bgg, bgb, 1, 100, 100)
-  if mmp.envids[gmcp.Room.Info.environment] then
+  if mmp.game ~= "astaria" and mmp.envids[gmcp.Room.Info.environment] then
     setRoomEnv(newid, mmp.envids[gmcp.Room.Info.environment])
   else
     setRoomEnv(newid, getRoomEnv(oldid))
@@ -10768,9 +10768,14 @@ function mmp.mappingNewroom(_, num)
               gmcp.Room.Info.environment ..
               "."
           end
-          -- check indoors status
+          
+          -- check indoors status          
           if mmp.game ~= "asteria" or mmp.game ~= "ashyria" then
-            local indoors = table.contains(gmcp.Room.Info.details, "indoors")
+            local indoors
+            if mmp.game ~= "astaria" then 
+              indoors = table.contains(gmcp.Room.Info.details, "indoors")
+            else indoors = (gmcp.Room.Info.environment == "indoors")
+            end
             if indoors and (getRoomUserData(num, "indoors") == '' or getRoomUserData(num,"outdoors") ~= '') then
             setRoomUserData(num, "indoors", "y")
             clearRoomUserDataItem(num, "outdoors")
@@ -10782,8 +10787,8 @@ function mmp.mappingNewroom(_, num)
           end
         end
 
-          -- check server area name (Achaea only for now)
-          if mmp.game == "achaea" then
+          -- check server area name (Achaea only for now, and Astaria now too)
+          if mmp.game == "astaria" or mmp.game == achaea then
             local serverArea = gmcp.Room.Info.area
             if serverArea ~= getRoomUserData(num, "Game Area") then
               setRoomUserData(num, "Game Area", serverArea)
